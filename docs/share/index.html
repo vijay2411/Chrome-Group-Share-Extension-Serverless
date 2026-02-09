@@ -4,156 +4,174 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GroupShare - Shared Tabs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #1a1a2e;
-      color: #e0e0e0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0a;
+      color: #e5e5e5;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 48px 20px;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 560px;
-      width: 100%;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    .container { max-width: 520px; width: 100%; }
+    header { text-align: center; margin-bottom: 36px; }
     header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fafafa;
+      letter-spacing: -0.3px;
     }
     header p {
-      color: #888;
-      margin-top: 6px;
-      font-size: 14px;
+      color: #666;
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 400;
     }
     .card {
-      background: #16213e;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 16px;
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 12px;
     }
     .group-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 4px;
     }
     .color-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
       flex-shrink: 0;
     }
     .group-title {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 600;
+      color: #fafafa;
     }
     .tab-count {
-      color: #888;
-      font-size: 13px;
+      color: #555;
+      font-size: 12px;
+      font-weight: 500;
       margin-bottom: 16px;
+      padding-left: 20px;
     }
-    .tab-list {
-      list-style: none;
-    }
-    .tab-list li {
-      border-bottom: 1px solid #2a2a4a;
-    }
-    .tab-list li:last-child {
-      border-bottom: none;
-    }
+    .tab-list { list-style: none; }
+    .tab-list li { border-bottom: 1px solid #1a1a1a; }
+    .tab-list li:last-child { border-bottom: none; }
     .tab-list a {
-      display: block;
-      padding: 10px 0;
-      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 8px;
+      color: #e5e5e5;
       text-decoration: none;
-      font-size: 14px;
-      word-break: break-all;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 400;
+      transition: background 0.15s;
+      border-radius: 4px;
+      margin: 0 -8px;
     }
-    .tab-list a:hover {
-      color: #93bbfc;
+    .tab-list a:hover { background: #1a1a1a; }
+    .tab-favicon {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      background: #222;
     }
-    .tab-url {
-      display: block;
-      color: #556;
-      font-size: 11px;
-      margin-top: 2px;
-      word-break: break-all;
+    .tab-domain {
+      color: #888;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .tab-title-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .actions {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #1a1a1a;
     }
     .btn {
       flex: 1;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       text-align: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: #fafafa;
+      color: #0a0a0a;
       border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      font-size: 14px;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
+      transition: background 0.15s;
       text-decoration: none;
-      transition: opacity 0.2s;
     }
-    .btn:hover { opacity: 0.9; }
+    .btn:hover { background: #e0e0e0; }
     .btn.secondary {
-      background: #0f3460;
-      border: 1px solid #2a4a7f;
+      background: transparent;
+      color: #999;
+      border: 1px solid #2a2a2a;
+    }
+    .btn.secondary:hover { background: #1a1a1a; color: #e5e5e5; }
+    .popup-notice {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #1a1507;
+      border: 1px solid #332d0a;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #c9a500;
+      display: none;
     }
     .install-banner {
-      background: #0f3460;
-      border: 1px solid #2a4a7f;
-      border-radius: 12px;
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
       padding: 20px;
       text-align: center;
     }
     .install-banner h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
-      color: #b0b0b0;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #999;
     }
     .install-banner p {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 12px;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 14px;
     }
     .error-state {
       text-align: center;
-      padding: 40px 20px;
-      color: #888;
+      padding: 48px 20px;
+      color: #555;
     }
     .error-state h2 {
-      font-size: 18px;
-      color: #e0e0e0;
-      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #e5e5e5;
+      margin-bottom: 6px;
     }
-    .colors {
-      --grey: #5f6368;
-      --blue: #1a73e8;
-      --red: #d93025;
-      --yellow: #f9ab00;
-      --green: #1e8e3e;
-      --pink: #d01884;
-      --purple: #a142f4;
-      --cyan: #007b83;
-      --orange: #e8710a;
-    }
+    .error-state p { font-size: 13px; }
   </style>
 </head>
 <body>
@@ -162,7 +180,6 @@
       <h1>GroupShare</h1>
       <p>Shared tab group</p>
     </header>
-
     <div id="content">
       <div class="error-state">
         <h2>Loading...</h2>
@@ -185,7 +202,20 @@
     }
 
     function getDomain(url) {
-      try { return new URL(url).hostname; } catch { return url; }
+      try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
+    }
+
+    function getFaviconUrl(url) {
+      try {
+        const u = new URL(url);
+        return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`;
+      } catch { return ""; }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
     }
 
     function render() {
@@ -196,7 +226,7 @@
         content.innerHTML = `
           <div class="error-state">
             <h2>No shared group found</h2>
-            <p>This page decodes GroupShare links. Use the GroupShare extension to generate a link.</p>
+            <p>This page decodes GroupShare links. Use the extension to generate one.</p>
           </div>`;
         return;
       }
@@ -208,7 +238,7 @@
         content.innerHTML = `
           <div class="error-state">
             <h2>Invalid link</h2>
-            <p>Could not decode this GroupShare link. It may be corrupted or incomplete.</p>
+            <p>Could not decode this GroupShare link. It may be corrupted.</p>
           </div>`;
         return;
       }
@@ -229,11 +259,11 @@
         catch { return false; }
       });
 
-      let tabsHtml = urls.map(url => `
+      const tabsHtml = urls.map(url => `
         <li>
           <a href="${escapeHtml(url)}" target="_blank" rel="noopener">
-            ${escapeHtml(getDomain(url))}
-            <span class="tab-url">${escapeHtml(url)}</span>
+            <img class="tab-favicon" src="${escapeHtml(getFaviconUrl(url))}" alt="" onerror="this.style.display='none'">
+            <span class="tab-title-text">${escapeHtml(getDomain(url))}</span>
           </a>
         </li>`).join("");
 
@@ -243,41 +273,54 @@
             <span class="color-dot" style="background: ${color}"></span>
             <span class="group-title">${escapeHtml(title)}</span>
           </div>
-          <div class="tab-count">${urls.length} tab${urls.length !== 1 ? 's' : ''}</div>
+          <div class="tab-count">${urls.length} tab${urls.length !== 1 ? "s" : ""}</div>
           <ul class="tab-list">${tabsHtml}</ul>
           <div class="actions">
-            <button class="btn" onclick="openAll()">Open All Tabs</button>
+            <button class="btn" id="open-all-btn">Open All Tabs</button>
+            <button class="btn secondary" id="copy-urls-btn">Copy All URLs</button>
+          </div>
+          <div class="popup-notice" id="popup-notice">
+            Your browser blocked some tabs. Allow popups for this site, then try again.
           </div>
         </div>
         <div class="install-banner">
           <h3>Get the GroupShare Extension</h3>
-          <p>Open all tabs in a Chrome Tab Group with one click.</p>
-          <a class="btn secondary" href="https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless#installation" target="_blank" rel="noopener">Install Extension</a>
+          <p>Opens all tabs in a Chrome Tab Group instantly — no popup issues.</p>
+          <a class="btn secondary" href="https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless#installation" target="_blank" rel="noopener">View on GitHub</a>
         </div>`;
+
+      document.getElementById("open-all-btn").addEventListener("click", () => openAll(urls));
+      document.getElementById("copy-urls-btn").addEventListener("click", () => copyUrls(urls));
     }
 
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
+    function openAll(urls) {
+      if (urls.length === 0) return;
+      let blocked = false;
+      // Open first URL synchronously (user-initiated click, so browser allows it)
+      const first = window.open(urls[0], "_blank", "noopener");
+      if (!first) blocked = true;
+      // Stagger the rest with delays
+      urls.slice(1).forEach((url, i) => {
+        setTimeout(() => {
+          const w = window.open(url, "_blank", "noopener");
+          if (!w && !blocked) {
+            blocked = true;
+            document.getElementById("popup-notice").style.display = "block";
+          }
+        }, (i + 1) * 150);
+      });
+      if (blocked) {
+        document.getElementById("popup-notice").style.display = "block";
+      }
     }
 
-    function openAll() {
-      const hash = window.location.hash.slice(1);
-      if (!hash) return;
-      try {
-        const payload = JSON.parse(fromBase64Url(hash));
-        if (payload.u && Array.isArray(payload.u)) {
-          payload.u.forEach(url => {
-            try {
-              const parsed = new URL(url);
-              if (["http:", "https:"].includes(parsed.protocol)) {
-                window.open(url, "_blank", "noopener");
-              }
-            } catch {}
-          });
-        }
-      } catch {}
+    function copyUrls(urls) {
+      const text = urls.join("\n");
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById("copy-urls-btn");
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy All URLs"; }, 1500);
+      });
     }
 
     render();

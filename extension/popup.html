@@ -4,42 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GroupShare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <header>
     <h1>GroupShare</h1>
-    <p class="subtitle">Share tab groups as a single link</p>
   </header>
 
   <section class="card" id="open-section">
-    <h2>Open a Shared Group</h2>
+    <h2>Open Shared Group</h2>
     <div class="input-row">
-      <input type="text" id="link-input" placeholder="Paste a GroupShare link here..." />
-      <button id="open-btn" title="Open tabs">Open</button>
+      <input type="text" id="link-input" placeholder="Paste a GroupShare link..." />
+      <button id="open-btn" class="btn-primary">Open</button>
     </div>
     <div id="open-status" class="status" hidden></div>
   </section>
 
-  <div class="divider"></div>
-
   <section class="card" id="share-section">
     <h2>Share a Tab Group</h2>
     <div id="no-groups" class="empty-state" hidden>
-      <p>No tab groups found. Create a tab group in Chrome first.</p>
+      <p>No tab groups found in this window.</p>
     </div>
     <div id="groups-container">
       <label for="group-select" class="sr-only">Select a tab group</label>
       <select id="group-select">
-        <option value="" disabled selected>Loading groups...</option>
+        <option value="" disabled selected>Select a group...</option>
       </select>
       <div id="tab-preview" class="tab-preview" hidden></div>
-      <button id="generate-btn" disabled>Generate Shareable Link</button>
+      <button id="generate-btn" class="btn-primary btn-full" disabled>Generate Link</button>
     </div>
     <div id="output-container" hidden>
-      <div class="output-row">
+      <div class="input-row">
         <input type="text" id="output-link" readonly />
-        <button id="copy-btn" title="Copy link">Copy</button>
+        <button id="copy-btn" class="btn-secondary">Copy</button>
       </div>
       <div id="share-status" class="status"></div>
     </div>
