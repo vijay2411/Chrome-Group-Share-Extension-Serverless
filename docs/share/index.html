@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroupShare - Shared Tabs</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 560px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      color: #888;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    .card {
+      background: #16213e;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .group-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .tab-count {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .tab-list {
+      list-style: none;
+    }
+    .tab-list li {
+      border-bottom: 1px solid #2a2a4a;
+    }
+    .tab-list li:last-child {
+      border-bottom: none;
+    }
+    .tab-list a {
+      display: block;
+      padding: 10px 0;
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 14px;
+      word-break: break-all;
+      transition: color 0.2s;
+    }
+    .tab-list a:hover {
+      color: #93bbfc;
+    }
+    .tab-url {
+      display: block;
+      color: #556;
+      font-size: 11px;
+      margin-top: 2px;
+      word-break: break-all;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .btn {
+      flex: 1;
+      display: inline-block;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn.secondary {
+      background: #0f3460;
+      border: 1px solid #2a4a7f;
+    }
+    .install-banner {
+      background: #0f3460;
+      border: 1px solid #2a4a7f;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .install-banner h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #b0b0b0;
+    }
+    .install-banner p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .error-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+    .error-state h2 {
+      font-size: 18px;
+      color: #e0e0e0;
+      margin-bottom: 8px;
+    }
+    .colors {
+      --grey: #5f6368;
+      --blue: #1a73e8;
+      --red: #d93025;
+      --yellow: #f9ab00;
+      --green: #1e8e3e;
+      --pink: #d01884;
+      --purple: #a142f4;
+      --cyan: #007b83;
+      --orange: #e8710a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GroupShare</h1>
+      <p>Shared tab group</p>
+    </header>
+
+    <div id="content">
+      <div class="error-state">
+        <h2>Loading...</h2>
+        <p>Decoding your shared tabs.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GROUP_COLORS = {
+      grey: "#5f6368", blue: "#1a73e8", red: "#d93025", yellow: "#f9ab00",
+      green: "#1e8e3e", pink: "#d01884", purple: "#a142f4", cyan: "#007b83",
+      orange: "#e8710a"
+    };
+
+    function fromBase64Url(b64) {
+      let s = b64.replace(/-/g, "+").replace(/_/g, "/");
+      while (s.length % 4) s += "=";
+      return decodeURIComponent(escape(atob(s)));
+    }
+
+    function getDomain(url) {
+      try { return new URL(url).hostname; } catch { return url; }
+    }
+
+    function render() {
+      const content = document.getElementById("content");
+      const hash = window.location.hash.slice(1);
+
+      if (!hash) {
+        content.innerHTML = `
+          <div class="error-state">
+            <h2>No shared group found</h2>
+            <p>This page decodes GroupShare links. Use the GroupShare extension to generate a link.</p>
+          </div>`;
+        return;
+      }
+
+      let payload;
+      try {
+        payload = JSON.parse(fromBase64Url(hash));
+      } catch {
+        content.innerHTML = `
+          <div class="error-state">
+            <h2>Invalid link</h2>
+            <p>Could not decode this GroupShare link. It may be corrupted or incomplete.</p>
+          </div>`;
+        return;
+      }
+
+      if (!payload.u || !Array.isArray(payload.u) || payload.u.length === 0) {
+        content.innerHTML = `
+          <div class="error-state">
+            <h2>Empty group</h2>
+            <p>No URLs were found in this shared group.</p>
+          </div>`;
+        return;
+      }
+
+      const color = GROUP_COLORS[payload.c] || GROUP_COLORS.grey;
+      const title = payload.t || "Shared Group";
+      const urls = payload.u.filter(u => {
+        try { const p = new URL(u); return ["http:", "https:"].includes(p.protocol); }
+        catch { return false; }
+      });
+
+      let tabsHtml = urls.map(url => `
+        <li>
+          <a href="${escapeHtml(url)}" target="_blank" rel="noopener">
+            ${escapeHtml(getDomain(url))}
+            <span class="tab-url">${escapeHtml(url)}</span>
+          </a>
+        </li>`).join("");
+
+      content.innerHTML = `
+        <div class="card">
+          <div class="group-header">
+            <span class="color-dot" style="background: ${color}"></span>
+            <span class="group-title">${escapeHtml(title)}</span>
+          </div>
+          <div class="tab-count">${urls.length} tab${urls.length !== 1 ? 's' : ''}</div>
+          <ul class="tab-list">${tabsHtml}</ul>
+          <div class="actions">
+            <button class="btn" onclick="openAll()">Open All Tabs</button>
+          </div>
+        </div>
+        <div class="install-banner">
+          <h3>Get the GroupShare Extension</h3>
+          <p>Open all tabs in a Chrome Tab Group with one click.</p>
+          <a class="btn secondary" href="https://github.com/vedantvijay/GroupShareExtension#installation" target="_blank" rel="noopener">Install Extension</a>
+        </div>`;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function openAll() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      try {
+        const payload = JSON.parse(fromBase64Url(hash));
+        if (payload.u && Array.isArray(payload.u)) {
+          payload.u.forEach(url => {
+            try {
+              const parsed = new URL(url);
+              if (["http:", "https:"].includes(parsed.protocol)) {
+                window.open(url, "_blank", "noopener");
+              }
+            } catch {}
+          });
+        }
+      } catch {}
+    }
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 360px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  padding: 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.card {
+  background: #16213e;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.card h2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b0b0b0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.divider {
+  height: 1px;
+  background: #2a2a4a;
+  margin: 12px 0;
+}
+
+/* Inputs & buttons */
+.input-row,
+.output-row {
+  display: flex;
+  gap: 8px;
+}
+
+input[type="text"],
+select {
+  flex: 1;
+  background: #0f3460;
+  border: 1px solid #2a4a7f;
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #e0e0e0;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #667eea;
+}
+
+input[type="text"]::placeholder {
+  color: #556;
+}
+
+select {
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+button {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#generate-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+/* Tab preview */
+.tab-preview {
+  margin-top: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #999;
+}
+
+.tab-preview .tab-item {
+  padding: 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-preview .tab-item::before {
+  content: "  ";
+}
+
+/* Output */
+#output-container {
+  margin-top: 10px;
+}
+
+#output-link {
+  font-size: 11px;
+}
+
+/* Status messages */
+.status {
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.status.success {
+  background: #0a3d2a;
+  color: #4ade80;
+}
+
+.status.error {
+  background: #3d0a0a;
+  color: #f87171;
+}
+
+.status.info {
+  background: #0a2a3d;
+  color: #60a5fa;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 12px;
+  color: #666;
+  font-size: 12px;
+}
+
+/* Color dots for group selector */
+.group-color {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroupShare</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>GroupShare</h1>
+    <p class="subtitle">Share tab groups as a single link</p>
+  </header>
+
+  <section class="card" id="open-section">
+    <h2>Open a Shared Group</h2>
+    <div class="input-row">
+      <input type="text" id="link-input" placeholder="Paste a GroupShare link here..." />
+      <button id="open-btn" title="Open tabs">Open</button>
+    </div>
+    <div id="open-status" class="status" hidden></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="card" id="share-section">
+    <h2>Share a Tab Group</h2>
+    <div id="no-groups" class="empty-state" hidden>
+      <p>No tab groups found. Create a tab group in Chrome first.</p>
+    </div>
+    <div id="groups-container">
+      <label for="group-select" class="sr-only">Select a tab group</label>
+      <select id="group-select">
+        <option value="" disabled selected>Loading groups...</option>
+      </select>
+      <div id="tab-preview" class="tab-preview" hidden></div>
+      <button id="generate-btn" disabled>Generate Shareable Link</button>
+    </div>
+    <div id="output-container" hidden>
+      <div class="output-row">
+        <input type="text" id="output-link" readonly />
+        <button id="copy-btn" title="Copy link">Copy</button>
+      </div>
+      <div id="share-status" class="status"></div>
+    </div>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
