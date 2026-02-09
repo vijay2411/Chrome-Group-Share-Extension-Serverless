@@ -21,15 +21,49 @@ No server required. All data is encoded directly in the link.
 5. Select the `extension/` folder from this repo
 6. The GroupShare icon appears in your toolbar — pin it for easy access
 
-### Deploy the Decoder Page (Optional)
+### Deploy the Decoder Page (Optional but Recommended)
 
-The decoder page lets recipients view shared tabs even without the extension installed.
+The decoder page lets recipients view and open shared tabs even without the extension installed. It also provides a landing page for your project.
 
-1. Push this repo to GitHub
-2. Go to **Settings → Pages** in your GitHub repo
-3. Set source to **Deploy from a branch**, select `main` branch, and set folder to `/docs`
-4. Your decoder page will be live at `https://<username>.github.io/GroupShareExtension/share/`
-5. Update the `BASE_URL` in `extension/popup.js` to match your GitHub Pages URL
+#### Step 1: Fork & Push to GitHub
+
+```bash
+# If you cloned this repo, just push to your own GitHub:
+git remote set-url origin https://github.com/<your-username>/<your-repo-name>.git
+git push -u origin main
+```
+
+Or simply **fork** this repository on GitHub.
+
+#### Step 2: Enable GitHub Pages
+
+1. Go to your repo on GitHub
+2. Click **Settings** (top menu bar)
+3. In the left sidebar, click **Pages** (under "Code and automation")
+4. Under **Source**, select **Deploy from a branch**
+5. Under **Branch**, select `main` and set the folder to `/docs`
+6. Click **Save**
+7. Wait 1-2 minutes — GitHub will show your site URL at the top of the Pages settings:
+   ```
+   https://<your-username>.github.io/<your-repo-name>/
+   ```
+
+#### Step 3: Update the Extension's Base URL
+
+The extension needs to know your GitHub Pages URL so the shareable links point to your decoder page.
+
+1. Open `extension/popup.js`
+2. Edit line 3 — change the `BASE_URL` to match your GitHub Pages URL:
+   ```js
+   const BASE_URL = "https://<your-username>.github.io/<your-repo-name>/share/";
+   ```
+3. Reload the extension in `chrome://extensions` (click the refresh icon on the GroupShare card)
+
+#### Step 4: Verify
+
+1. Open your GitHub Pages URL in a browser — you should see the GroupShare landing page
+2. Generate a shareable link from the extension — the link should start with your GitHub Pages URL
+3. Open that link in a browser — the decoder page should display all the shared tabs
 
 ## Usage
 

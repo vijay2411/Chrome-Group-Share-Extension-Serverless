@@ -1,6 +1,6 @@
 // --- Config ---
 // Change this to your GitHub Pages URL after deploying the docs/ folder
-const BASE_URL = "https://vedantvijay.github.io/GroupShareExtension/share/";
+const BASE_URL = "https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/share/";
 
 // --- DOM refs ---
 const linkInput = document.getElementById("link-input");
