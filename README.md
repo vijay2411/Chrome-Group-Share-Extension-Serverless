@@ -20,11 +20,13 @@ That's it. Nothing else.
 
 ## ⚡ Features
 
-- 📦 Bundles all tabs in a Chrome Tab Group into one shareable URL
+- 📦 Bundles all tabs in a **Chrome Tab Group** into one *shareable URL*
 - 🎨 Preserves the group name and color across sender and receiver
-- 🔒 Zero data collection — your URLs never leave your browser, everything is encoded directly in the link
-- 🌐 Two ways to share — extension-to-extension (instant) or via a web page (receiver doesn't need the extension)
-- ⚙️ Zero dependencies, no sign-up, no backend, no database
+- 🔒 ZERO data collection — your URLs never leave your browser, everything is encoded directly in the link
+- 🌐 Two ways/modes to share — extension-to-extension (instant) or via a web page (receiver doesn't need the extension)
+- ♾️ Links **NEVER EXPIRE** — as long as the decoder page is hosted, your links work forever
+- 🔢 **UNLIMITED links** — nothing is stored server-side, so there's no cap on how many links you can generate
+- ⚙️ ZERO dependencies, NO sign-up, NO backend, NO database
 
 ## 🚧 Limitations
 
