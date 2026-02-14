@@ -6,7 +6,7 @@
 
 body {
   width: 340px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Geist Sans', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0a0a0a;
   color: #e5e5e5;
   padding: 16px;
@@ -59,7 +59,7 @@ select {
   border-radius: 4px;
   padding: 8px 10px;
   color: #e5e5e5;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Geist Sans', 'Geist', sans-serif;
   font-size: 12px;
   outline: none;
   transition: border-color 0.15s;
@@ -91,7 +91,7 @@ select {
   border: none;
   border-radius: 4px;
   padding: 8px 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Geist Sans', 'Geist', sans-serif;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -125,7 +125,7 @@ select {
   border: 1px solid #2a2a2a;
   border-radius: 4px;
   padding: 8px 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Geist Sans', 'Geist', sans-serif;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -211,6 +211,189 @@ select {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+/* Password toggle row */
+.password-toggle-row {
+  margin-top: 10px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #666;
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-track {
+  position: relative;
+  width: 28px;
+  height: 16px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: #555;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.toggle-label input:checked + .toggle-track {
+  background: #2a4a2a;
+}
+
+.toggle-label input:checked + .toggle-track .toggle-thumb {
+  left: 14px;
+  background: #4ade80;
+}
+
+.lock-icon-small {
+  color: #555;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.toggle-label input:checked ~ .lock-icon-small {
+  color: #4ade80;
+}
+
+.toggle-label input:checked ~ span:last-child {
+  color: #4ade80;
+}
+
+/* Password input section */
+.password-section {
+  margin-top: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.password-section .input-row {
+  gap: 6px;
+}
+
+/* Unlock section (open side) */
+.unlock-section {
+  margin-top: 8px;
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.unlock-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.lock-icon {
+  color: #666;
+  flex-shrink: 0;
+}
+
+input[type="password"] {
+  flex: 1;
+  background: #0a0a0a;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: #e5e5e5;
+  font-family: 'Geist Sans', 'Geist', sans-serif;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input[type="password"]:focus {
+  border-color: #444;
+}
+
+input[type="password"]::placeholder {
+  color: #444;
+}
+
+/* Password notice (shown after link generation) */
+.password-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: #0d1117;
+  border: 1px solid #1a2a3a;
+  border-radius: 4px;
+  color: #60a5fa;
+}
+
+.password-notice > svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #60a5fa;
+}
+
+.password-notice-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.password-notice-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #60a5fa;
+  letter-spacing: 0.2px;
+}
+
+.password-notice-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.password-notice-value code {
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e5e5;
+  letter-spacing: 0.5px;
+}
+
+.btn-copy-sm {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 3px;
+  padding: 3px 5px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s;
+}
+
+.btn-copy-sm:hover {
+  color: #e5e5e5;
+  border-color: #444;
+  background: #1a1a1a;
+}
 
 .sr-only {
   position: absolute;

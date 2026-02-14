@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GroupShare</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -19,6 +17,17 @@
     <div class="input-row">
       <input type="text" id="link-input" placeholder="Paste a GroupShare link..." />
       <button id="open-btn" class="btn-primary">Open</button>
+    </div>
+    <div id="unlock-section" class="unlock-section" hidden>
+      <div class="unlock-header">
+        <svg class="lock-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Password protected</span>
+      </div>
+      <div class="input-row">
+        <input type="password" id="unlock-password" placeholder="Enter password..." />
+        <button id="unlock-btn" class="btn-primary">Unlock</button>
+      </div>
+      <div id="unlock-status" class="status" hidden></div>
     </div>
     <div id="open-status" class="status" hidden></div>
   </section>
@@ -34,12 +43,37 @@
         <option value="" disabled selected>Select a group...</option>
       </select>
       <div id="tab-preview" class="tab-preview" hidden></div>
+      <div class="password-toggle-row">
+        <label class="toggle-label" for="password-toggle">
+          <input type="checkbox" id="password-toggle" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <svg class="lock-icon-small" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Password protect</span>
+        </label>
+      </div>
+      <div id="password-section" class="password-section" hidden>
+        <div class="input-row">
+          <input type="text" id="share-password" placeholder="Enter password (optional)..." />
+        </div>
+      </div>
       <button id="generate-btn" class="btn-primary btn-full" disabled>Generate Link</button>
     </div>
     <div id="output-container" hidden>
       <div class="input-row">
         <input type="text" id="output-link" readonly />
         <button id="copy-btn" class="btn-secondary">Copy</button>
+      </div>
+      <div id="password-notice" class="password-notice" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div class="password-notice-content">
+          <span class="password-notice-label">Recipient will need this password</span>
+          <div class="password-notice-value">
+            <code id="password-display"></code>
+            <button id="copy-password-btn" class="btn-copy-sm" title="Copy password">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
       <div id="share-status" class="status"></div>
     </div>

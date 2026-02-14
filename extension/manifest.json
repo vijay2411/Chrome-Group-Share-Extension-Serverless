@@ -3,7 +3,7 @@
   "name": "GroupShare",
   "version": "1.0.0",
   "description": "Share Chrome Tab Groups as a single link. Recipients open all tabs instantly.",
-  "permissions": ["tabs", "tabGroups"],
+  "permissions": ["tabs", "tabGroups", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

@@ -4,13 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GroupShare - Shared Tabs</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Geist Sans', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0a0a0a;
       color: #e5e5e5;
       min-height: 100vh;
@@ -118,7 +116,7 @@
       border: none;
       border-radius: 6px;
       padding: 10px 16px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Geist Sans', 'Geist', sans-serif;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -179,6 +177,57 @@
       margin-bottom: 6px;
     }
     .error-state p { font-size: 13px; }
+
+    /* Password gate */
+    .password-gate {
+      text-align: center;
+      padding: 32px 20px;
+    }
+    .password-gate .lock-icon {
+      color: #444;
+      margin-bottom: 16px;
+    }
+    .password-gate h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e5e5e5;
+      margin-bottom: 4px;
+    }
+    .password-gate p {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .password-gate .input-row {
+      display: flex;
+      gap: 8px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .password-gate input {
+      flex: 1;
+      background: #0a0a0a;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #e5e5e5;
+      font-family: 'Geist Sans', 'Geist', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .password-gate input:focus {
+      border-color: #444;
+    }
+    .password-gate input::placeholder {
+      color: #444;
+    }
+    .password-gate .unlock-error {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #f87171;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -208,6 +257,72 @@
       return decodeURIComponent(escape(atob(s)));
     }
 
+    function base64UrlToBytes(b64) {
+      let s = b64.replace(/-/g, "+").replace(/_/g, "/");
+      while (s.length % 4) s += "=";
+      const binary = atob(s);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return bytes;
+    }
+
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["decrypt"]
+      );
+    }
+
+    async function decryptPayload(encString, password) {
+      const parts = encString.split(".");
+      if (parts.length !== 4 || parts[0] !== "enc") {
+        throw new Error("Invalid encrypted format");
+      }
+      const salt = base64UrlToBytes(parts[1]);
+      const iv = base64UrlToBytes(parts[2]);
+      const ciphertext = base64UrlToBytes(parts[3]);
+      const key = await deriveKey(password, salt);
+      const decrypted = await crypto.subtle.decrypt(
+        { name: "AES-GCM", iv },
+        key,
+        ciphertext
+      );
+      return new TextDecoder().decode(decrypted);
+    }
+
+    function getCacheKey(hash) {
+      const parts = hash.split(".");
+      if (parts.length === 4) return "gs_pw_" + parts[3].substring(0, 16);
+      return null;
+    }
+
+    function cachePassword(hash, password) {
+      const key = getCacheKey(hash);
+      if (key) {
+        try { localStorage.setItem(key, password); } catch {}
+      }
+    }
+
+    function getCachedPassword(hash) {
+      const key = getCacheKey(hash);
+      if (!key) return null;
+      try { return localStorage.getItem(key); } catch { return null; }
+    }
+
+    function clearCachedPassword(hash) {
+      const key = getCacheKey(hash);
+      if (key) {
+        try { localStorage.removeItem(key); } catch {}
+      }
+    }
+
     function getDomain(url) {
       try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
     }
@@ -225,7 +340,59 @@
       return div.innerHTML;
     }
 
-    function render() {
+    function isEncryptedHash(hash) {
+      return hash.startsWith("enc.");
+    }
+
+    function showPasswordGate(hash) {
+      const content = document.getElementById("content");
+      content.innerHTML = `
+        <div class="card">
+          <div class="password-gate">
+            <svg class="lock-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <h2>Password protected</h2>
+            <p>Enter the password to view these shared tabs.</p>
+            <div class="input-row">
+              <input type="password" id="gate-password" placeholder="Enter password..." autocomplete="off" />
+              <button class="btn" id="gate-unlock-btn">Unlock</button>
+            </div>
+            <div class="unlock-error" id="gate-error">Wrong password. Please try again.</div>
+          </div>
+        </div>`;
+
+      const passwordInput = document.getElementById("gate-password");
+      const unlockBtn = document.getElementById("gate-unlock-btn");
+      const errorEl = document.getElementById("gate-error");
+
+      async function attemptUnlock() {
+        const password = passwordInput.value.trim();
+        if (!password) return;
+
+        try {
+          const jsonString = await decryptPayload(hash, password);
+          const payload = JSON.parse(jsonString);
+          cachePassword(hash, password);
+          renderTabs(payload);
+        } catch {
+          errorEl.style.display = "block";
+          passwordInput.value = "";
+          passwordInput.focus();
+        }
+      }
+
+      unlockBtn.addEventListener("click", attemptUnlock);
+      passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") attemptUnlock();
+        errorEl.style.display = "none";
+      });
+
+      passwordInput.focus();
+    }
+
+    async function render() {
       const content = document.getElementById("content");
       const hash = window.location.hash.slice(1);
 
@@ -238,6 +405,24 @@
         return;
       }
 
+      if (isEncryptedHash(hash)) {
+        // Try cached password first
+        const cached = getCachedPassword(hash);
+        if (cached) {
+          try {
+            const jsonString = await decryptPayload(hash, cached);
+            const payload = JSON.parse(jsonString);
+            renderTabs(payload);
+            return;
+          } catch {
+            clearCachedPassword(hash);
+          }
+        }
+        showPasswordGate(hash);
+        return;
+      }
+
+      // Plain (unencrypted) link
       let payload;
       try {
         payload = JSON.parse(fromBase64Url(hash));
@@ -249,6 +434,12 @@
           </div>`;
         return;
       }
+
+      renderTabs(payload);
+    }
+
+    function renderTabs(payload) {
+      const content = document.getElementById("content");
 
       if (!payload.u || !Array.isArray(payload.u) || payload.u.length === 0) {
         content.innerHTML = `
@@ -307,10 +498,6 @@
 
     function openAll(urls) {
       if (urls.length === 0) return;
-      // Open ALL tabs synchronously within the click handler.
-      // Browsers allow multiple window.open calls in the same
-      // synchronous execution context of a user-initiated event.
-      // If popups are blocked, user needs to allow once — then it works forever.
       let blocked = false;
       for (const url of urls) {
         const w = window.open(url, "_blank", "noopener");
