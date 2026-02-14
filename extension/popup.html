@@ -35,13 +35,15 @@
   <section class="card" id="share-section">
     <h2>Share a Tab Group</h2>
     <div id="no-groups" class="empty-state" hidden>
-      <p>No tab groups found in this window.</p>
+      <p>No open tab groups found.</p>
+      <p class="hint">Saved groups must be opened first — right-click a saved group in your tab strip and select "Open group in new window."</p>
     </div>
     <div id="groups-container">
       <label for="group-select" class="sr-only">Select a tab group</label>
       <select id="group-select">
         <option value="" disabled selected>Select a group...</option>
       </select>
+      <p class="api-note">Only open groups are shown. <a href="https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless#limitations" target="_blank">Saved groups?</a></p>
       <div id="tab-preview" class="tab-preview" hidden></div>
       <div class="password-toggle-row">
         <label class="toggle-label" for="password-toggle">

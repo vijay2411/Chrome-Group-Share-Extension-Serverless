@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroupShare - Privacy Policy</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/style.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Geist Sans', 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0a;
+      color: #e5e5e5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 48px 20px;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    .container { max-width: 620px; width: 100%; }
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #fafafa;
+      letter-spacing: -0.3px;
+    }
+    header p {
+      color: #666;
+      margin-top: 4px;
+      font-size: 13px;
+    }
+    .card {
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
+      padding: 28px;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fafafa;
+      margin-bottom: 10px;
+      margin-top: 24px;
+    }
+    h2:first-child { margin-top: 0; }
+    p {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    ul {
+      list-style: none;
+      margin-bottom: 10px;
+    }
+    ul li {
+      font-size: 13px;
+      color: #999;
+      padding: 4px 0 4px 16px;
+      position: relative;
+    }
+    ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 4px;
+      height: 4px;
+      background: #333;
+      border-radius: 50%;
+    }
+    strong { color: #ccc; font-weight: 500; }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .updated {
+      text-align: center;
+      font-size: 11px;
+      color: #444;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GroupShare</h1>
+      <p>Privacy Policy</p>
+    </header>
+
+    <div class="card">
+      <h2>Overview</h2>
+      <p>GroupShare is a Chrome extension that lets you share Tab Groups as a single link. It is designed with a <strong>zero data collection</strong> architecture. No personal information is collected, transmitted, stored on any server, or shared with any third party.</p>
+
+      <h2>Data That Never Leaves Your Browser</h2>
+      <ul>
+        <li><strong>Tab URLs and group metadata</strong> are encoded directly into the URL hash fragment. The hash fragment is never sent to any server — it stays entirely in your browser.</li>
+        <li><strong>Passwords</strong> (when using the password-protect feature) are used locally to encrypt the link payload using AES-256-GCM. The password itself is never transmitted anywhere.</li>
+      </ul>
+
+      <h2>Local Storage</h2>
+      <p>GroupShare uses <strong>chrome.storage.local</strong> solely to cache passwords for previously unlocked links, so you don't have to re-enter them. This data:</p>
+      <ul>
+        <li>Is stored locally on your device only</li>
+        <li>Is never sent to any server or third party</li>
+        <li>Can be cleared at any time by removing the extension</li>
+      </ul>
+
+      <h2>Permissions Used</h2>
+      <ul>
+        <li><strong>tabs</strong> — Read tab URLs in your selected group to generate the shareable link</li>
+        <li><strong>tabGroups</strong> — Read group names and colors so they can be preserved when the recipient opens the link</li>
+        <li><strong>storage</strong> — Cache passwords locally for previously unlocked encrypted links</li>
+      </ul>
+
+      <h2>No Tracking</h2>
+      <p>GroupShare does not use any analytics, telemetry, cookies, fingerprinting, or tracking of any kind. There are no user accounts and no sign-up.</p>
+
+      <h2>No Third-Party Data Sharing</h2>
+      <p>No user data is sold, transferred, or shared with any third party for any purpose — including advertising, data brokering, or profiling.</p>
+
+      <h2>External Resources</h2>
+      <p>The extension popup loads the <strong>Geist Sans</strong> font from a CDN (cdn.jsdelivr.net) for styling purposes only. The web decoder page uses <strong>Google Favicons API</strong> to display site icons. No user data is sent to these services.</p>
+
+      <h2>Open Source</h2>
+      <p>GroupShare is fully open source. You can audit the entire codebase at <a href="https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless" target="_blank" rel="noopener">github.com/vijay2411/Chrome-Group-Share-Extension-Serverless</a>.</p>
+
+      <h2>Contact</h2>
+      <p>For questions or concerns about this privacy policy, contact Vedant Vijay via <a href="https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless/issues" target="_blank" rel="noopener">GitHub Issues</a>.</p>
+    </div>
+
+    <p class="updated">Last updated: February 2026</p>
+  </div>
+</body>
+</html>

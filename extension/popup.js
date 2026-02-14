@@ -162,6 +162,10 @@ function showStatus(el, message, type) {
 }
 
 // --- Load tab groups into dropdown ---
+// Note: chrome.tabGroups.query({}) returns groups from ALL open windows,
+// including collapsed groups. However, Chrome does NOT expose "saved" tab
+// groups (groups that have been closed but saved in the bookmarks bar)
+// through any extension API. This is a known Chrome limitation.
 async function loadGroups() {
   const groups = await chrome.tabGroups.query({});
   groupSelect.innerHTML = "";

@@ -1,47 +1,56 @@
-# 🔗 GroupShare
+# GroupShare
 
-**Turn any Chrome Tab Group into a single shareable link 🔗.**
+**Share Chrome Tab Groups as a single link. End-to-end encrypted. Completely serverless.**
 
-🙋🏼‍♂️ You're researching something. You've got 8 tabs open, neatly organized in a Chrome Tab Group called "Project Research." Now you want to share all of those tabs with a coworker. What do you do — copy-paste 8 URLs one by one? Screenshot the tabs? Send a bookmark export?
+You're researching something. You've got 8 tabs open, neatly organized in a Chrome Tab Group called "Project Research." Now you want to share all those tabs with a coworker. What do you do — copy-paste 8 URLs one by one?
 
-👉🏻 GroupShare solves this. It takes all the tabs in a Chrome Tab Group and encodes them into a single link. You send that link to anyone. They open it, and every tab comes back — organized in a group with the same name and color you gave it.
-
-✅ No accounts. No servers. No data collection. Just a link - a merged link containing all information.
-
-
-## 🧩 What It Does
-
-GroupShare does two things:
-
-1. **Share** a Chrome Tab Group as a single link — select a group, generate a URL, send it to anyone
-2. **Receive** a Chrome Tab Group from a link — paste the URL, all tabs open in a group with the original name and color
-
-That's it. Nothing else.
-
-## ⚡ Features
-
-- 📦 Bundles all tabs in a **Chrome Tab Group** into one *shareable URL*
-- 🎨 Preserves the group name and color across sender and receiver
-- 🔒 ZERO data collection — your URLs never leave your browser, everything is encoded directly in the link
-- 🌐 Two ways/modes to share — extension-to-extension (instant) or via a web page (receiver doesn't need the extension)
-- ♾️ Links **NEVER EXPIRE** — as long as the decoder page is hosted, your links work forever
-- 🔢 **UNLIMITED links** — nothing is stored server-side, so there's no cap on how many links you can generate
-- ⚙️ ZERO dependencies, NO sign-up, NO backend, NO database
-
-## 🚧 Limitations
-
-- **Chromium-only** — Works in Chrome, Brave, and Edge. Not Firefox or Safari (they don't support Tab Groups)
-- **Links can be long** — Each tab URL is encoded into the link. A group with 10+ tabs produces a long URL. Use a URL shortener if needed
-- **Snapshot, not sync** — The link captures tabs at the moment you generate it. If the sender adds or removes tabs after sharing, the link doesn't update
-- **No storage** — If you lose the link, it's gone. Nothing is saved anywhere
+GroupShare solves this. Select a Tab Group, generate a link, send it. The recipient opens it, and every tab comes back — organized in a group with the same name and color. One link, all tabs. 100% Open-Souce. Fully Transparent.
 
 ---
 
-## 🛠️ Quick Start
+## Zero Trust Architecture
 
-### 📥 Install the Extension
+GroupShare is built so that **nobody — not even the developer — can see what you share.**
 
-Both sender and receiver need this for Option A. Only the sender needs this for Option B. Works out of the box — no additional setup required.
+| Principle | How |
+|-----------|-----|
+| **No servers** | There is no backend. No database. No API. Nothing to hack, nothing to subpoena. |
+| **No middleman** | Tab data is encoded directly into the URL hash fragment (`#`). The hash fragment is **never sent to any server** — not even the hosting server. It stays entirely in your browser. |
+| **End-to-end encrypted** | When you enable password protection, your tabs are encrypted with **AES-256-GCM** using a key derived via **PBKDF2** (100,000 iterations, SHA-256). The encryption and decryption happen entirely in your browser. The password never leaves your device. |
+| **Zero data collection** | No analytics. No telemetry. No cookies. No fingerprinting. No accounts. No tracking of any kind. |
+| **Open source** | Every line of code is auditable. There is nothing hidden. |
+
+**In practice:** when you share an encrypted link, the only way to see the tabs inside is to know the password. The hosting server (GitHub Pages) never receives the data. The developer has no access. There is no "admin panel" or "backend database" where your tabs are stored. They exist only in the URL itself, encrypted.
+
+---
+
+## Features
+
+**Core**
+- Share all tabs in a Chrome Tab Group as a single URL
+- Preserves group name and color for the recipient
+- Two sharing modes: extension-to-extension (instant) or via web page (no extension needed)
+- Links never expire and there's no limit on how many you can create
+
+**Privacy Sharing (NEW)**
+- Optional password protection with AES-256-GCM encryption
+- Set your own password or let GroupShare auto-generate a strong one
+- Password is displayed after link generation with a one-click copy button
+- Recipients enter the password to unlock — wrong password shows a clear error
+- Passwords are cached locally so you only enter them once per link
+- If a cached password stops working, you're prompted to re-enter it
+
+**Zero Footprint**
+- No servers, no databases, no accounts, no sign-up
+- No data collection, no analytics, no cookies
+- Completely open source (MIT license)
+- Zero dependencies — pure vanilla JavaScript
+
+---
+
+## Quick Start
+
+### Install
 
 ```bash
 git clone https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless.git
@@ -49,283 +58,140 @@ git clone https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless.g
 
 1. Open `chrome://extensions`
 2. Enable **Developer mode** (top-right toggle)
-3. Click **Load unpacked** → select the `extension/` folder
-4. Pin the extension — click 🧩 in toolbar → pin 📌 **GroupShare**
+3. Click **Load unpacked** and select the `extension/` folder
+4. Pin the extension from the puzzle piece icon in the toolbar
 
----
+### Share a Tab Group
 
-### 🅰️ Option A: Extension ↔ Extension 
-
-Who for: "When both parties shares links to each other OR when link sharing is between less number of parties and is 2 way"
-> Both people have GroupShare installed. No website needed, no popup blocker issues. Best for teams, friends, or sharing between your own devices.
-
-#### Send a Link
-
-1. Right-click a tab → **Add tab to new group** (if you don't have a group yet)
+1. Right-click a tab and choose **Add tab to new group** (if you don't have a group yet)
 2. Click the **GroupShare** icon in your toolbar
 3. Select your tab group from the dropdown
-4. Click **Generate Link** → **Copy**
-5. Send the link to anyone
+4. (Optional) Toggle **Password protect** on — enter a password or leave blank to auto-generate
+5. Click **Generate Link** and copy it
+6. Send the link via Slack, email, Discord, or any messenger
 
-#### Receive a Link
+### Open a Shared Link
 
-1. Click the **GroupShare** icon in your toolbar
-2. Paste the link into the **"Open Shared Group"** field
-3. Click **Open**
-4. All tabs open in a new Chrome Tab Group with the original name and color
+**With the extension:**
+1. Click the GroupShare icon
+2. Paste the link into "Open Shared Group"
+3. Click **Open** (if password-protected, enter the password when prompted)
+4. All tabs open in a new Chrome Tab Group
 
----
-
-### 🅱️ Option B: Extension → Web Page
-Who for: "When the sender is a POWER USER - shares links to many people. When link sharing(sending) is among many people and receivers(customers) don't want hassle to install extension"
-> Only the sender needs the extension. The receiver just opens a link in any browser. Best for sharing with anyone who hasn't installed GroupShare.
-
-**No setup required.** Generated links automatically point to a hosted decoder page. Just install the extension and start sharing.
-
-#### Send a Link
-
-Same as Option A — select a group, generate a link, copy and share. The generated link opens as a web page for anyone — no extension needed on the receiver's end.
-
-#### Receive a Link (No Extension Needed)
-
-1. Open the GroupShare link in any browser
-2. The decoder page shows the group name, color, and all tabs
-3. Click **Open All Tabs** or click individual links
-4. **Copy All URLs** is available as a fallback
-
-> 💡 Your browser may block popups on the first attempt. Click the blocked-popup icon in the address bar → "Always allow popups from this site" → try again.
+**Without the extension:**
+1. Open the link in any browser
+2. The web decoder shows the group name, color, and all tabs
+3. If password-protected, enter the password to unlock
+4. Click **Open All Tabs** or click individual links
 
 ---
 
-## 📄 License
+## Sharing Modes
 
-MIT — free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
+### Option A: Extension to Extension
+
+Both sender and receiver have GroupShare installed. The receiver pastes the link into the extension popup. All tabs open instantly in a Chrome Tab Group. No popup blocker issues, no web page needed.
+
+**Best for:** teams, friends, sharing between your own devices.
+
+### Option B: Extension to Web Page
+
+Only the sender needs the extension. The generated link points to a hosted decoder page. The receiver opens it in any browser and sees all tabs listed. No extension required on the receiver's end.
+
+**Best for:** sharing with anyone who hasn't installed GroupShare, public sharing, blog posts.
+
+Both modes support password protection. The same link works in both modes.
 
 ---
----
 
-# 📚 Deep Dive — Full Documentation
+## How It Works
 
-*Everything below is the detailed reference. You don't need to read this to use GroupShare — the Quick Start above is enough. This section is for contributors, curious developers, and anyone who wants to understand the internals.*
-
----
-
-## ⚙️ How It Works — Under the Hood
-
-### The Algorithm
-
-GroupShare uses a simple **encode → share → decode** pipeline with zero server involvement:
+### The Encoding Pipeline
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Chrome Tab  │     │  JSON Object │     │  Base64URL   │     │  Shareable  │
-│    Group     │ ──▶ │  { t, c, u } │ ──▶ │   Encoded    │ ──▶ │    Link     │
-│  (n tabs)    │     │              │     │   String     │     │             │
-└─────────────┘     └──────────────┘     └──────────────┘     └─────────────┘
+Chrome Tab Group → JSON { title, color, urls[] } → Base64URL encode → URL hash fragment
 ```
 
-### Step-by-Step Data Flow
+The encoded data lives entirely in the `#hash` of the URL. Hash fragments are **never sent to the server** by any browser — this is part of the HTTP specification. The GitHub Pages server that hosts the decoder page never receives your tab data.
 
-**🔵 Sending (Generating a Link):**
+### The Encryption Pipeline (when password-protected)
 
-1. User clicks the extension and selects a Tab Group
-2. Extension calls `chrome.tabGroups.query()` to get the group's **name** and **color**
-3. Extension calls `chrome.tabs.query({ groupId })` to get **all tab URLs** in that group
-4. This data is packed into a compact JSON object:
-   ```json
-   {
-     "t": "My Research",
-     "c": "blue",
-     "u": ["https://example.com", "https://docs.google.com/...", "..."]
-   }
-   ```
-   > Keys are shortened (`t` = title, `c` = color, `u` = URLs) to minimize link length
-5. The JSON string is encoded using **Base64URL** (a URL-safe variant of Base64 that replaces `+/=` with `-_`)
-6. The encoded string is appended as a **hash fragment** to a base URL:
-   ```
-   https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/share/#eyJ0IjoiTXkgUmVzZ...
-   ```
-7. User copies this link and shares it via any channel (Slack, email, text, etc.)
+```
+Password → PBKDF2 (SHA-256, 100k iterations) → AES-256-GCM key
+JSON payload → AES-GCM encrypt with random salt + IV → enc.SALT.IV.CIPHERTEXT
+```
 
-**🟢 Receiving (Opening a Link):**
+- **Salt** (16 bytes, random per link) — prevents rainbow table attacks
+- **IV** (12 bytes, random per link) — ensures identical data produces different ciphertext
+- **AES-256-GCM** — authenticated encryption, tamper-proof
+- **PBKDF2 100k iterations** — computationally expensive key derivation, resists brute-force
 
-1. Recipient pastes the link into the GroupShare extension popup
-2. Extension extracts the `#hash` fragment from the URL
-3. Decodes the Base64URL string back into JSON
-4. Validates each URL (only `http:` and `https:` protocols are allowed)
-5. Opens each URL using `chrome.tabs.create()` with `active: false` (tabs open in background)
-6. Groups all new tabs together using `chrome.tabs.group()`
-7. Applies the original group name and color using `chrome.tabGroups.update()`
+The encrypted payload replaces the Base64URL data in the hash fragment. Links with `enc.` prefix are encrypted; all others are plain (backward compatible).
 
-### Technical Decisions
+### Password Caching
 
-| Decision | Reason |
-|----------|--------|
-| **Base64URL encoding** | URL-safe, no special characters that break URLs, works everywhere |
-| **Hash fragment (`#`)** | The hash is never sent to the server — it stays entirely in the browser. The GitHub Pages server never sees the tab data |
-| **No compression** | Keeps the extension zero-dependency. Base64 adds ~33% overhead but avoids needing external libraries |
-| **Compact JSON keys** | `t`, `c`, `u` instead of `title`, `color`, `urls` — saves bytes in every link |
+- **Extension:** uses `chrome.storage.local` (keyed by a hash of the ciphertext)
+- **Web decoder:** uses `localStorage`
+- On successful decrypt, the password is cached. On failure, the cache is cleared and you're prompted again.
 
 ---
 
-## 🔀 Mode Details
+## Limitations
 
-### Option A: Extension-to-Extension (Serverless) — In Depth
-
-Both the sender and receiver install the extension. No hosting, no web page, no popup blocker issues.
-
-#### Full Installation Walkthrough
-
-1. **Download the code**
-   ```bash
-   git clone https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless.git
-   ```
-   Or download and extract the ZIP from the GitHub repo page.
-
-2. **Open Chrome's extension manager**
-   - Navigate to `chrome://extensions` in your address bar
-
-3. **Enable Developer Mode**
-   - Toggle the **Developer mode** switch in the top-right corner of the page
-
-4. **Load the extension**
-   - Click **Load unpacked**
-   - Navigate to the downloaded folder and select the `extension/` subfolder
-   - ⚠️ Select the `extension/` folder specifically, **not** the root project folder
-
-5. **Pin the extension**
-   - Click the puzzle piece icon 🧩 in Chrome's toolbar
-   - Find **GroupShare** and click the pin 📌 icon
-   - The GroupShare icon now appears in your toolbar for quick access
-
-#### Sending a Link
-
-1. **Create a Tab Group in Chrome** (if you don't have one already)
-   - Right-click any tab → **Add tab to new group**
-   - Give the group a name and color
-   - Drag more tabs into the group as needed
-
-2. **Open GroupShare** — Click the GroupShare icon in your toolbar
-
-3. **Select your group** — The dropdown lists all Tab Groups in your current window. Select the one you want to share. A preview of the tabs appears below.
-
-4. **Generate the link** — Click **Generate Link**. A shareable URL appears in the output field.
-
-5. **Copy and share** — Click **Copy** to copy the link to your clipboard. Send it via Slack, email, text, or any messaging platform.
-
-#### Receiving a Link
-
-1. **Copy the GroupShare link** that was sent to you
-2. **Open GroupShare** — Click the GroupShare icon in your toolbar
-3. **Paste and open** — Paste the link into the **"Open Shared Group"** input field → click **Open** (or press Enter)
-4. **Done!** — All tabs open in the background, automatically grouped into a Chrome Tab Group with the sender's original name and color
+- **Saved tab groups are not visible to extensions** — Chrome's "saved tab groups" feature (introduced in Chrome 120) stores groups internally when you close them. Unfortunately, Chrome does **not expose saved tab groups to any extension API** — not through `chrome.tabGroups`, `chrome.sessions`, `chrome.bookmarks`, or any other API. This is a [known limitation](https://issues.chromium.org/issues/323982812) acknowledged by the Chrome team but not yet resolved. **Workaround:** open your saved tab group first (right-click it in the tab strip or bookmarks bar → "Open group"), and it will immediately appear in GroupShare's dropdown. Collapsed groups that are still open in a window work fine — only fully closed/saved groups are invisible to extensions.
+- **Chromium-only** — works in Chrome, Brave, and Edge. Firefox and Safari don't support Tab Groups.
+- **Links can be long** — each tab URL is encoded into the link. 10+ tabs = long URL. Use a URL shortener if needed.
+- **Snapshot, not sync** — the link captures tabs at the moment you generate it. Later changes to the group aren't reflected.
+- **No revocation** — once a link is generated, it can't be revoked or updated. If you need to stop sharing, change the password.
 
 ---
 
-### Option B: Web Decoder — In Depth
-
-Generated links automatically point to a hosted decoder page. No setup required — install the extension, generate a link, and share it. The receiver opens the link in any browser.
-
-#### How It Works
-
-1. The sender generates a link using the GroupShare extension (same as Option A)
-2. The link points to a hosted decoder page that reads the encoded data from the URL's hash fragment
-3. The decoder page displays the group name, color, and all tab URLs
-4. The receiver clicks **Open All Tabs** or individual links — no extension needed
-
-#### Receiving via the Web Page
-
-1. **Click or paste the GroupShare link** in any browser
-2. The **decoder page** loads, showing the group name, color, and all tabs with their domains
-3. Click **Open All Tabs** to open everything, or click individual links
-4. **"Copy All URLs"** is available as a fallback
-
-> 💡 Your browser may block popups on the first attempt. Click the blocked-popup icon in the address bar → "Always allow popups from this site" → try again.
-
-#### Advanced: Self-Hosting the Decoder Page
-
-If you want to host the decoder page on your own domain or GitHub Pages, you can:
-
-1. Fork or push this repo to your own GitHub
-2. Go to repo **Settings → Pages** → Source: **Deploy from a branch** → Branch: `main`, Folder: `/docs` → **Save**
-3. Wait 1–2 minutes. Your site will be live at `https://<your_github_username>.github.io/<repo_name>/`
-4. Edit `extension/popup.js` line 3 — set `BASE_URL` to your Pages URL:
-   ```js
-   const BASE_URL = "https://<your_github_username>.github.io/<repo_name>/share/";
-   ```
-   > ⚠️ Must end with `/share/` — this points to the decoder page, not the landing page
-5. Reload the extension in `chrome://extensions`
-
----
-
-## 🤔 Which Option Should You Use?
-
-| Scenario | Recommendation |
-|----------|---------------|
-| Sharing with your team (everyone has the extension) | ✅ **Option A** — Extension-to-Extension |
-| Sharing with a friend who doesn't have the extension | ✅ **Option B** — Web Decoder |
-| Sharing research links publicly (blog, social media) | ✅ **Option B** — Web Decoder |
-| Quick sharing between your own devices | ✅ **Option A** — Extension-to-Extension |
-| Maximum reliability (no popup blocker issues) | ✅ **Option A** — Extension-to-Extension |
-
-> 💡 You can use both simultaneously. If the receiver has the extension, they paste the link into it. If they don't, the same link works as a web page.
-
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```
 GroupShareExtension/
+├── extension/                  ← Chrome Extension (load this folder)
+│   ├── manifest.json           ← Manifest V3 config
+│   ├── popup.html              ← Extension popup UI
+│   ├── popup.css               ← Styles (Geist Sans, dark theme)
+│   ├── popup.js                ← Core logic (encode/decode, crypto, Chrome APIs)
+│   └── icons/                  ← Extension icons (16, 32, 48, 128px)
 │
-├── 📁 extension/              ← Chrome Extension (load this folder)
-│   ├── manifest.json          ← Manifest V3 configuration
-│   ├── popup.html             ← Extension popup UI
-│   ├── popup.css              ← Styles (Inter font, dark theme)
-│   ├── popup.js               ← Core logic (encode/decode, Chrome APIs)
-│   └── 📁 icons/
-│       ├── icon16.png         ← Toolbar icon
-│       ├── icon48.png         ← Extensions page icon
-│       └── icon128.png        ← Web Store / install icon
+├── docs/                       ← GitHub Pages (decoder + landing + privacy)
+│   ├── index.html              ← Landing page
+│   ├── share/index.html        ← Web decoder page
+│   └── privacy/index.html      ← Privacy policy
 │
-├── 📁 docs/                   ← GitHub Pages site (decoder + landing)
-│   ├── index.html             ← Landing page
-│   └── 📁 share/
-│       └── index.html         ← Decoder page (reads hash, shows tabs)
-│
-├── LICENSE
+├── store-listing.md            ← Chrome Web Store listing content
+├── LICENSE                     ← MIT
 └── README.md
 ```
 
 ---
 
-## 🔧 Technical Specs
+## Technical Specs
 
 | Property | Value |
 |----------|-------|
-| **Manifest version** | V3 (latest Chrome standard) |
-| **Dependencies** | Zero — pure vanilla JavaScript |
-| **Font** | [Inter](https://fonts.google.com/specimen/Inter) via Google Fonts |
-| **Encoding** | Base64URL (RFC 4648 §5) |
-| **Data transport** | URL hash fragment (`#`) — never touches a server |
-| **Permissions** | `tabs` (read tab URLs), `tabGroups` (read group names/colors) |
-| **Storage** | None — no local storage, no cookies, no external calls |
-| **Data collected** | None — your tab URLs never leave your browser |
+| Manifest version | V3 |
+| Dependencies | Zero — pure vanilla JavaScript |
+| Font | Geist Sans (by Vercel) |
+| Encoding | Base64URL (RFC 4648) |
+| Encryption | AES-256-GCM + PBKDF2-SHA256 (100k iterations) |
+| Data transport | URL hash fragment — never touches a server |
+| Permissions | `tabs`, `tabGroups`, `storage` |
+| Data collected | None |
 
 ---
 
-## ❓ Troubleshooting
+## Privacy Policy
 
-**"No tab groups found"**
-> You need at least one Chrome Tab Group in your current window. Right-click a tab → Add tab to new group.
+Full policy: [https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/privacy/](https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/privacy/)
 
-**Generated link is very long**
-> Each tab URL is encoded into the link. More tabs = longer link. This is by design (no server). For very large groups, some messaging apps may truncate the link — use a URL shortener like [tinyurl.com](https://tinyurl.com).
+**TL;DR:** GroupShare collects zero data. Tab URLs stay in the URL hash (never sent to any server). Passwords are used for client-side encryption only. Password cache is stored locally on your device. No analytics, no tracking, no cookies, no accounts.
 
-**"Open All Tabs" doesn't work on the decoder page**
-> Your browser is blocking popups. Click the blocked-popup icon (🚫) in the address bar → "Always allow popups from this site" → try again. Alternatively, use the **Copy All URLs** button.
+---
 
-**Extension icon doesn't appear after loading**
-> Click the puzzle piece icon (🧩) in Chrome's toolbar → find GroupShare → click the pin (📌) icon.
+## License
 
-**Tabs open but aren't grouped**
-> Make sure you're using Google Chrome (or a Chromium-based browser). Tab Groups are not available in all browsers. Also ensure the extension has the `tabGroups` permission — reload it from `chrome://extensions`.
+MIT — free to use, modify, and distribute. See [LICENSE](LICENSE).

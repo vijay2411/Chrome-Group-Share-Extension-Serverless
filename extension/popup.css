@@ -199,12 +199,37 @@ select {
   color: #60a5fa;
 }
 
+/* API note under group selector */
+.api-note {
+  margin-top: 6px;
+  font-size: 10px;
+  color: #444;
+}
+
+.api-note a {
+  color: #555;
+  text-decoration: none;
+  border-bottom: 1px dotted #444;
+  transition: color 0.15s;
+}
+
+.api-note a:hover {
+  color: #999;
+}
+
 /* Empty state */
 .empty-state {
   text-align: center;
   padding: 14px 8px;
   font-size: 12px;
   color: #555;
+}
+
+.empty-state .hint {
+  margin-top: 6px;
+  font-size: 10px;
+  color: #444;
+  line-height: 1.5;
 }
 
 /* Scrollbar */
