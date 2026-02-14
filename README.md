@@ -41,7 +41,7 @@ That's it. Nothing else.
 
 ### 📥 Install the Extension
 
-Both sender and receiver need this for Option A. Only the sender needs this for Option B.
+Both sender and receiver need this for Option A. Only the sender needs this for Option B. Works out of the box — no additional setup required.
 
 ```bash
 git clone https://github.com/vijay2411/Chrome-Group-Share-Extension-Serverless.git
@@ -80,21 +80,11 @@ Who for: "When both parties shares links to each other OR when link sharing is b
 Who for: "When the sender is a POWER USER - shares links to many people. When link sharing(sending) is among many people and receivers(customers) don't want hassle to install extension"
 > Only the sender needs the extension. The receiver just opens a link in any browser. Best for sharing with anyone who hasn't installed GroupShare.
 
-#### One-Time Setup (Sender Only)
-
-Before you can generate links that work as web pages, you need to host a free decoder page:
-
-1. Fork or push this repo to your own GitHub
-2. Go to repo **Settings → Pages** → Source: **Deploy from a branch** → Branch: `main`, Folder: `/docs` → **Save**
-3. Edit `extension/popup.js` line 3 — set `BASE_URL` to your Pages URL in your local repo(which is used to load extension) and push that to your own forked repo as well:
-   ```js
-   const BASE_URL = "https://<your_github_username>.github.io/<repo_name>/share/";
-   ```
-4. Reload the extension in `chrome://extensions`
+**No setup required.** Generated links automatically point to a hosted decoder page. Just install the extension and start sharing.
 
 #### Send a Link
 
-Same as Option A — select a group, generate a link, copy and share. The only difference is the generated link now points to your decoder web page.
+Same as Option A — select a group, generate a link, copy and share. The generated link opens as a web page for anyone — no extension needed on the receiver's end.
 
 #### Receive a Link (No Extension Needed)
 
@@ -153,7 +143,7 @@ GroupShare uses a simple **encode → share → decode** pipeline with zero serv
 5. The JSON string is encoded using **Base64URL** (a URL-safe variant of Base64 that replaces `+/=` with `-_`)
 6. The encoded string is appended as a **hash fragment** to a base URL:
    ```
-   https://your-site.github.io/your-repo/share/#eyJ0IjoiTXkgUmVzZ...
+   https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/share/#eyJ0IjoiTXkgUmVzZ...
    ```
 7. User copies this link and shares it via any channel (Slack, email, text, etc.)
 
@@ -232,50 +222,16 @@ Both the sender and receiver install the extension. No hosting, no web page, no 
 
 ---
 
-### Option B: GitHub Pages (Web Decoder) — In Depth
+### Option B: Web Decoder — In Depth
 
-The sender hosts a static decoder page on GitHub Pages. When someone opens a GroupShare link, they land on this page which displays all the shared URLs. The receiver can click individual links or "Open All Tabs."
+Generated links automatically point to a hosted decoder page. No setup required — install the extension, generate a link, and share it. The receiver opens the link in any browser.
 
-#### Full Setup Walkthrough (Sender Only — One-Time)
+#### How It Works
 
-##### Step 1: Push to GitHub
-
-```bash
-git remote set-url origin https://github.com/<your_github_username>/<repo_name>.git
-git push -u origin main
-```
-
-Or simply **fork** the repository on GitHub.
-
-##### Step 2: Enable GitHub Pages
-
-1. Go to your repository on GitHub
-2. Click **Settings** in the top menu bar
-3. In the left sidebar, click **Pages** (under "Code and automation")
-4. Under **Build and deployment → Source**, select **Deploy from a branch**
-5. Under **Branch**, select `main` and set the folder to `/docs`
-6. Click **Save**
-7. Wait 1–2 minutes. GitHub will display your site URL at the top:
-   ```
-   ✅ Your site is live at https://<your_github_username>.github.io/<repo_name>/
-   ```
-
-##### Step 3: Update the Extension's Base URL
-
-1. Open `extension/popup.js` in any text editor
-2. Edit **line 3** — set `BASE_URL` to your GitHub Pages URL:
-   ```js
-   const BASE_URL = "https://<your_github_username>.github.io/<repo_name>/share/";
-   ```
-   > ⚠️ Must end with `/share/` — this points to the decoder page, not the landing page
-3. Save the file
-4. Go to `chrome://extensions` and click the **🔄 reload** icon on the GroupShare card
-
-##### Step 4: Verify
-
-1. Open your GitHub Pages URL — you should see the GroupShare landing page
-2. Generate a link from the extension — it should start with your Pages URL
-3. Open that link in a browser — the decoder page should display all the shared URLs
+1. The sender generates a link using the GroupShare extension (same as Option A)
+2. The link points to a hosted decoder page that reads the encoded data from the URL's hash fragment
+3. The decoder page displays the group name, color, and all tab URLs
+4. The receiver clicks **Open All Tabs** or individual links — no extension needed
 
 #### Receiving via the Web Page
 
@@ -286,6 +242,20 @@ Or simply **fork** the repository on GitHub.
 
 > 💡 Your browser may block popups on the first attempt. Click the blocked-popup icon in the address bar → "Always allow popups from this site" → try again.
 
+#### Advanced: Self-Hosting the Decoder Page
+
+If you want to host the decoder page on your own domain or GitHub Pages, you can:
+
+1. Fork or push this repo to your own GitHub
+2. Go to repo **Settings → Pages** → Source: **Deploy from a branch** → Branch: `main`, Folder: `/docs` → **Save**
+3. Wait 1–2 minutes. Your site will be live at `https://<your_github_username>.github.io/<repo_name>/`
+4. Edit `extension/popup.js` line 3 — set `BASE_URL` to your Pages URL:
+   ```js
+   const BASE_URL = "https://<your_github_username>.github.io/<repo_name>/share/";
+   ```
+   > ⚠️ Must end with `/share/` — this points to the decoder page, not the landing page
+5. Reload the extension in `chrome://extensions`
+
 ---
 
 ## 🤔 Which Option Should You Use?
@@ -293,8 +263,8 @@ Or simply **fork** the repository on GitHub.
 | Scenario | Recommendation |
 |----------|---------------|
 | Sharing with your team (everyone has the extension) | ✅ **Option A** — Extension-to-Extension |
-| Sharing with a friend who doesn't have the extension | ✅ **Option B** — GitHub Pages |
-| Sharing research links publicly (blog, social media) | ✅ **Option B** — GitHub Pages |
+| Sharing with a friend who doesn't have the extension | ✅ **Option B** — Web Decoder |
+| Sharing research links publicly (blog, social media) | ✅ **Option B** — Web Decoder |
 | Quick sharing between your own devices | ✅ **Option A** — Extension-to-Extension |
 | Maximum reliability (no popup blocker issues) | ✅ **Option A** — Extension-to-Extension |
 

@@ -1,5 +1,5 @@
 // --- Config ---
-// Change this to your GitHub Pages URL after deploying the docs/ folder
+// Decoder page hosted on GitHub Pages — all generated links point here by default
 const BASE_URL = "https://vijay2411.github.io/Chrome-Group-Share-Extension-Serverless/share/";
 
 // --- DOM refs ---
